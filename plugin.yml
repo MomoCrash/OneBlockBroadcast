@@ -1,0 +1,7 @@
+name: kOneBlockBroadcast
+version: 1.0
+author: Toze
+main: com.toze.broadcast.Main
+commands:
+  broadcastreload:
+    permission: broadcastreload.use

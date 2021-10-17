@@ -1,0 +1,16 @@
+{
+  "interval": 10,
+  "mini_message": 5,
+  "messages": [
+    [
+      "Ligne une",
+      "Ligne deux",
+      "&6Ligne trois"
+    ],
+    [
+      "Message deux : Ligne une",
+      "Ligne deux",
+      "&6Ligne trois"
+    ]
+  ]
+}
