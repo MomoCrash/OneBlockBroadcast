@@ -35,8 +35,7 @@ public class BroadcastListener implements Listener {
                 timer = 0;
                 if (messagesCount >= broadcastHandler.getMinimumMessages()) {
                     final List<List<String>> messages = broadcastHandler.getMessages();
-                    final List<String> messagesToSend = broadcastHandler.getMessages()
-                            .get(random.nextInt(messages.size()));
+                    final List<String> messagesToSend = messages.get(random.nextInt(messages.size()));
 
                     for (String s : messagesToSend) {
                         Bukkit.getServer().broadcastMessage(s);
