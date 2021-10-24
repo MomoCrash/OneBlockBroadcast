@@ -1,25 +1,30 @@
 package com.toze.broadcast.listeners;
 
-import com.toze.broadcast.KBroadcastHandler;
-import com.toze.broadcast.Main;
+import com.toze.broadcast.BroadcastHandler;
+import com.toze.broadcast.OneBlockBroadcast;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import io.papermc.paper.event.player.AsyncChatEvent;
 
-import java.lang.reflect.Member;
 import java.util.List;
 import java.util.Random;
 
 public class BroadcastListener implements Listener {
 
+    private final Random random = new Random();
     private int messagesCount;
 
-    public BroadcastListener(KBroadcastHandler broadcastHandler, Main main) {
-        this.messagesCount = 0;
-        Bukkit.getScheduler().runTaskTimerAsynchronously(main, new Runnable() {
+    /**
+     * Default constructor for BroadcastListener
+     */
+    public BroadcastListener() {
 
-            Random random = new Random();
+        this.messagesCount = 0;
+        final BroadcastHandler broadcastHandler = OneBlockBroadcast.getInstance().getBroadcastHandler();
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(OneBlockBroadcast.getInstance(), new Runnable() {
+
             int timer = 0;
 
             @Override
@@ -29,7 +34,14 @@ public class BroadcastListener implements Listener {
 
                 timer = 0;
                 if (messagesCount >= broadcastHandler.getMinimumMessages()) {
-                    broadcastHandler.getMessages().get(random.nextInt(broadcastHandler.getMessages().size())).forEach(line -> Bukkit.broadcastMessage(line));
+                    final List<List<String>> messages = broadcastHandler.getMessages();
+                    final List<String> messagesToSend = broadcastHandler.getMessages()
+                            .get(random.nextInt(messages.size()));
+
+                    for (String s : messagesToSend) {
+                        Bukkit.getServer().broadcastMessage(s);
+                    }
+
                     messagesCount = 0;
                 }
 
@@ -40,7 +52,7 @@ public class BroadcastListener implements Listener {
     }
 
     @EventHandler
-    public void onMessage(AsyncPlayerChatEvent event) {
+    public void onMessage(AsyncChatEvent event) {
         this.messagesCount++;
     }
 
